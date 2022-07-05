@@ -1,6 +1,5 @@
 ﻿using System;
 using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
@@ -38,13 +37,6 @@ namespace CleanArchitecture.Infrastructure.Services
             var token = tokenHandler.CreateToken(tokenDescriptor);
 
             return tokenHandler.WriteToken(token);
-        }
-
-        public string? GetClaimByType(string token, string key)
-        {
-            var jwtSecurityToken = new JwtSecurityTokenHandler().ReadJwtToken(token);
-
-            return jwtSecurityToken?.Claims.FirstOrDefault(i => i.Type == key)?.Value;
         }
 
         public async Task<bool> ValidateTokenAsync(string token)

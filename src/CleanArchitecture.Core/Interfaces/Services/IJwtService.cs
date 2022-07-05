@@ -7,8 +7,6 @@ namespace CleanArchitecture.Core.Interfaces.Services
     {
         public string GenerateToken(User user);
 
-        public string? GetClaimByType(string token, string type);
-
         public Task<bool> ValidateTokenAsync(string token);
     }
 }
