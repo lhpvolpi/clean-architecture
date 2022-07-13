@@ -16,8 +16,8 @@ namespace CleanArchitecture.Tests.InfrastructureTests.HelpersTests
             var token = this.JwtService.GenerateToken(user);
 
             // act
-            var userId = token.GetClaimByType(JwtExtensions.NameId);
-            var email = token.GetClaimByType(JwtExtensions.Email);
+            var userId = token.AccessToken.GetClaimByType(JwtExtensions.NameId);
+            var email = token.AccessToken.GetClaimByType(JwtExtensions.Email);
 
             // assert
             Assert.True(!string.IsNullOrEmpty(userId) && !string.IsNullOrEmpty(email));

@@ -17,9 +17,10 @@ namespace CleanArchitecture.Core.Entities
 
         public string Password { get; set; }
 
-        public void Update(string email)
+        public void Update(string email, string password)
         {
             this.Email = email;
+            this.Password = ComputeSHA256Hash(password);
             this.UpdatedAt = DateTime.UtcNow;
         }
 

@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using CleanArchitecture.Core.Entities;
 using CleanArchitecture.Core.Interfaces.Services;
+using CleanArchitecture.Core.ValueObjects;
 using Microsoft.IdentityModel.Tokens;
 
 namespace CleanArchitecture.Infrastructure.Services
@@ -15,7 +16,7 @@ namespace CleanArchitecture.Infrastructure.Services
 
         public JwtService(IJwtSettings jwtSettings) => this._jwtSettings = jwtSettings;
 
-        public string GenerateToken(User user)
+        public TokenVO GenerateToken(User user)
         {
             var key = Encoding.ASCII.GetBytes(this._jwtSettings.Secret);
 
@@ -34,9 +35,9 @@ namespace CleanArchitecture.Infrastructure.Services
             };
 
             var tokenHandler = new JwtSecurityTokenHandler();
-            var token = tokenHandler.CreateToken(tokenDescriptor);
+            var securityToken = tokenHandler.CreateToken(tokenDescriptor);
 
-            return tokenHandler.WriteToken(token);
+            return new TokenVO(tokenHandler.WriteToken(securityToken), tokenDescriptor.IssuedAt.Value, tokenDescriptor.Expires.Value);
         }
 
         public async Task<bool> ValidateTokenAsync(string token)

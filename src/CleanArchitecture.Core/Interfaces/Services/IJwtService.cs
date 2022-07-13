@@ -1,11 +1,12 @@
 ﻿using System.Threading.Tasks;
 using CleanArchitecture.Core.Entities;
+using CleanArchitecture.Core.ValueObjects;
 
 namespace CleanArchitecture.Core.Interfaces.Services
 {
     public interface IJwtService
     {
-        public string GenerateToken(User user);
+        public TokenVO GenerateToken(User user);
 
         public Task<bool> ValidateTokenAsync(string token);
     }

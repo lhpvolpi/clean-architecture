@@ -30,7 +30,7 @@ namespace CleanArchitecture.Tests.InfrastructureTests.ServicesTests
             var token = this.JwtService.GenerateToken(user);
 
             // act
-            var result = await this.JwtService.ValidateTokenAsync(token);
+            var result = await this.JwtService.ValidateTokenAsync(token.AccessToken);
 
             // assert
             Assert.True(result);
