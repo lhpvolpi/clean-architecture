@@ -1,5 +1,5 @@
 ﻿using System;
-using CleanArchitecture.Core.Entities;
+using CleanArchitecture.Infrastructure.Common;
 using CleanArchitecture.Infrastructure.Services;
 using Moq;
 

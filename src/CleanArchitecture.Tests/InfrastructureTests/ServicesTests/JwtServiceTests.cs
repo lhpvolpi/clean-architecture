@@ -13,21 +13,21 @@ namespace CleanArchitecture.Tests.InfrastructureTests.ServicesTests
         public void Should_Generate_Token()
         {
             // arrange
-            var user = new User("email@email.com", "admin@123");
+            var account = new Account("email@email.com", "admin", "admin@123");
 
             // act
-            var result = this.JwtService.GenerateToken(user);
+            var result = this.JwtService.GenerateToken(account);
 
             // assert
             Assert.NotNull(result);
         }
 
-        [Fact(DisplayName = "should Validate token")]
+        [Fact(DisplayName = "should validate token")]
         public async Task Should_Validate_Token()
         {
             // arrange
-            var user = new User("email@email.com", "admin@123");
-            var token = this.JwtService.GenerateToken(user);
+            var account = new Account("email@email.com", "admin", "admin@123");
+            var token = this.JwtService.GenerateToken(account);
 
             // act
             var result = await this.JwtService.ValidateTokenAsync(token.AccessToken);
@@ -36,13 +36,10 @@ namespace CleanArchitecture.Tests.InfrastructureTests.ServicesTests
             Assert.True(result);
         }
 
-        [Fact(DisplayName = "not should Validate token")]
+        [Fact(DisplayName = "not should validate token")]
         public void Not_Should_Validate_Token()
         {
-            // arrange
-            var user = new User("email@email.com", "admin@123");
-
-            // act, assert
+            // arrange, act, assert
             Assert.ThrowsAnyAsync<ArgumentNullException>(async () => await this.JwtService.ValidateTokenAsync(string.Empty));
         }
     }

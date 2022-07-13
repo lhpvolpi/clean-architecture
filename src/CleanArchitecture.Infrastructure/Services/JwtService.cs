@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using CleanArchitecture.Core.Entities;
 using CleanArchitecture.Core.Interfaces.Services;
 using CleanArchitecture.Core.ValueObjects;
+using CleanArchitecture.Infrastructure.Common;
 using Microsoft.IdentityModel.Tokens;
 
 namespace CleanArchitecture.Infrastructure.Services
@@ -16,7 +17,7 @@ namespace CleanArchitecture.Infrastructure.Services
 
         public JwtService(IJwtSettings jwtSettings) => this._jwtSettings = jwtSettings;
 
-        public TokenVO GenerateToken(User user)
+        public TokenVO GenerateToken(Account account)
         {
             var key = Encoding.ASCII.GetBytes(this._jwtSettings.Secret);
 
@@ -27,8 +28,8 @@ namespace CleanArchitecture.Infrastructure.Services
                 IssuedAt = DateTime.UtcNow,
                 Subject = new ClaimsIdentity(new[]
                 {
-                   new Claim(type: ClaimTypes.NameIdentifier, value: user.Id.ToString()),
-                   new Claim(type: ClaimTypes.Email,value: user.Email)
+                   new Claim(type: ClaimTypes.NameIdentifier, value: account.Id.ToString()),
+                   new Claim(type: ClaimTypes.Email,value: account.Email)
                 }),
                 Expires = DateTime.UtcNow.AddDays(this._jwtSettings.ExpiresInDays),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
