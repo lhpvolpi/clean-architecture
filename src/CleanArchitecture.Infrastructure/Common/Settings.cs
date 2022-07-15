@@ -47,7 +47,7 @@ namespace CleanArchitecture.Infrastructure.Common
 
         string DatabaseName { get; set; }
 
-        string AccountCollection { get; set; }
+        string UserCollection { get; set; }
     }
 
     public class MongoDbSettings : IMongoDbSettings
@@ -58,14 +58,14 @@ namespace CleanArchitecture.Infrastructure.Common
 
             this.ConnectionString = settings.GetValue<string>("ConnectionString");
             this.DatabaseName = settings.GetValue<string>("DatabaseName");
-            this.AccountCollection = settings.GetValue<string>("AccountCollection");
+            this.UserCollection = settings.GetValue<string>("UserCollection");
         }
 
         public string ConnectionString { get; set; }
 
         public string DatabaseName { get; set; }
 
-        public string AccountCollection { get; set; }
+        public string UserCollection { get; set; }
     }
 
     #endregion

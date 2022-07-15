@@ -10,14 +10,14 @@ namespace CleanArchitecture.Core.Interfaces.Commands
 
         IMetadata? Metadata { get; set; }
 
-        dynamic? Results { get; set; }
+        dynamic? Data { get; set; }
 
         List<KeyValuePair<string, string>>? Messages { get; set; }
     }
 
     public interface IMetadata
     {
-        string Type { get; set; }
+        string? Type { get; set; }
 
         int? Start { get; set; }
 

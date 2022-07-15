@@ -2,50 +2,43 @@
 using System.Security.Cryptography;
 using System.Text;
 using CleanArchitecture.Core.Common.Entities;
-using CleanArchitecture.Core.Enums;
 
 namespace CleanArchitecture.Core.Entities
 {
-    public class Account : Entity
+    public class User : Entity
     {
-        public Account(string email,
+        public User(string email,
             string username,
             string password)
         {
             this.Email = email;
             this.Username = username;
             this.Password = ComputeSHA256Hash(password);
+            this.Code = GenerateCode();
+            this.ConfirmedCode = false;
+            this.RefreshToken = null;
         }
-
-        public string Password { get; set; }
-
-        public string Username { get; set; }
 
         public string Email { get; set; }
 
-        public string? FullName { get; set; }
+        public string Username { get; set; }
 
-        public string? PhoneNumber { get; set; }
+        public string Password { get; set; }
 
-        public EGender? Gender { get; set; }
+        public string Code { get; set; }
 
-        public DateTime? Birthday { get; set; }
+        public bool ConfirmedCode { get; set; }
 
-        public void Update(string username,
-            string? fullName = null,
-            string? phoneNumber = null,
-            EGender? gender = null,
-            DateTime? birthday = null)
+        public string? RefreshToken { get; set; }
+
+        public void Update(string email, string username)
         {
+            this.Email = email;
             this.Username = username;
-            this.FullName = fullName;
-            this.PhoneNumber = phoneNumber;
-            this.Gender = gender;
-            this.Birthday = birthday;
             this.UpdatedAt = DateTime.UtcNow;
         }
 
-        public void UpdatePassword(string password)
+        public void ChangePassword(string password)
         {
             if (string.IsNullOrEmpty(password))
                 throw new ArgumentNullException(nameof(password), "is required");
@@ -57,7 +50,7 @@ namespace CleanArchitecture.Core.Entities
             this.UpdatedAt = DateTime.UtcNow;
         }
 
-        public static string ComputeSHA256Hash(string input)
+        private static string ComputeSHA256Hash(string input)
         {
             if (string.IsNullOrEmpty(input))
                 throw new ArgumentNullException(nameof(input), "is required");
@@ -73,6 +66,8 @@ namespace CleanArchitecture.Core.Entities
 
             return stringBuilder.ToString();
         }
+
+        private static string GenerateCode() => Guid.NewGuid().ToString().Replace("-", string.Empty)[..5].ToUpper();
 
         public override void Activate()
         {

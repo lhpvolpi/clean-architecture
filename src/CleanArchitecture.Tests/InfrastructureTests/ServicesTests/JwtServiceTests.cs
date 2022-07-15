@@ -13,10 +13,10 @@ namespace CleanArchitecture.Tests.InfrastructureTests.ServicesTests
         public void Should_Generate_Token()
         {
             // arrange
-            var account = new Account("email@email.com", "admin", "admin@123");
+            var user = new User("email@email.com", "admin", "admin@123");
 
             // act
-            var result = this.JwtService.GenerateToken(account);
+            var result = this.JwtService.GenerateToken(user);
 
             // assert
             Assert.NotNull(result);
@@ -26,8 +26,8 @@ namespace CleanArchitecture.Tests.InfrastructureTests.ServicesTests
         public async Task Should_Validate_Token()
         {
             // arrange
-            var account = new Account("email@email.com", "admin", "admin@123");
-            var token = this.JwtService.GenerateToken(account);
+            var user = new User("email@email.com", "admin", "admin@123");
+            var token = this.JwtService.GenerateToken(user);
 
             // act
             var result = await this.JwtService.ValidateTokenAsync(token.AccessToken);

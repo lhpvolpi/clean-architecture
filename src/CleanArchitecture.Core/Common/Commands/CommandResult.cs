@@ -11,7 +11,7 @@ namespace CleanArchitecture.Core.Common.Commands
 
         public IMetadata? Metadata { get; set; }
 
-        public dynamic? Results { get; set; }
+        public dynamic? Data { get; set; }
 
         public List<KeyValuePair<string, string>>? Messages { get; set; }
 
@@ -20,7 +20,7 @@ namespace CleanArchitecture.Core.Common.Commands
            int? start = null,
            int? limit = null,
            int? total = null,
-           dynamic? results = null,
+           dynamic? data = null,
            List<KeyValuePair<string, string>>? messages = null)
         {
             return new CommandResult
@@ -28,7 +28,7 @@ namespace CleanArchitecture.Core.Common.Commands
                 Success = false,
                 StatusCode = statusCode,
                 Metadata = new Metadata(metadataType, start, limit, total),
-                Results = results,
+                Data = data,
                 Messages = messages
             };
         }
@@ -38,7 +38,7 @@ namespace CleanArchitecture.Core.Common.Commands
             int? start = null,
             int? limit = null,
             int? total = null,
-            dynamic? results = null,
+            dynamic? data = null,
             List<KeyValuePair<string, string>>? messages = null)
         {
             return new CommandResult
@@ -46,7 +46,7 @@ namespace CleanArchitecture.Core.Common.Commands
                 Success = true,
                 StatusCode = statusCode,
                 Metadata = new Metadata(metadataType, start, limit, total),
-                Results = results,
+                Data = data,
                 Messages = messages
             };
         }
@@ -55,7 +55,7 @@ namespace CleanArchitecture.Core.Common.Commands
 
     public class Metadata : IMetadata
     {
-        public string Type { get; set; }
+        public string? Type { get; set; }
 
         public int? Start { get; set; }
 

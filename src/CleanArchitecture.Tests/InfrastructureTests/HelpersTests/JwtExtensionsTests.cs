@@ -12,7 +12,7 @@ namespace CleanArchitecture.Tests.InfrastructureTests.HelpersTests
         public void Should_Get_Claim_By_Type()
         {
             // arrange
-            var user = new Account("email@email.com", "admin", "admin@123");
+            var user = new User("email@email.com", "admin", "admin@123");
             var token = this.JwtService.GenerateToken(user);
 
             // act
