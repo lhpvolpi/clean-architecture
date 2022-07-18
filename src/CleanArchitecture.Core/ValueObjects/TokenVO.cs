@@ -25,7 +25,8 @@ namespace CleanArchitecture.Core.ValueObjects
 
         public bool IsExpired => DateTime.UtcNow >= Expires;
 
-        private static string GenerateRefreshToken() => Guid.NewGuid().ToString().Replace("-", string.Empty);
+        private static string GenerateRefreshToken()
+            => Guid.NewGuid().ToString().Replace("-", string.Empty);
 
         protected override IEnumerable<object> GetEqualityComponents()
         {
