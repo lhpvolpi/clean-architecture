@@ -10,11 +10,14 @@ namespace CleanArchitecture.Infrastructure.Ioc
         public static void AddInfrastructureModule(this IServiceCollection service)
         {
             // settings
+            service.AddSingleton<ISmtpSettings, SmtpSettings>();
+
             service.AddScoped<IJwtSettings, JwtSettings>();
             service.AddScoped<IMongoDbSettings, MongoDbSettings>();
 
             // services
             service.AddTransient<IJwtService, JwtService>();
+            service.AddTransient<ISmtpService, SmtpService>();
         }
     }
 }

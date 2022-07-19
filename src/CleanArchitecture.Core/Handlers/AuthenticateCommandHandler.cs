@@ -37,7 +37,7 @@ namespace CleanArchitecture.Core.Handlers
                 return CommandResultExtensions.CreateError404(command, nameof(command.Username), "user not found");
 
             if (!user.Password.Equals(command.Password.ComputeSHA256Hash()))
-                return CommandResultExtensions.CreateError406(command, nameof(command.Password), "worng password");
+                return CommandResultExtensions.CreateError404(command, nameof(command.Password), "wrong password");
 
             var tokenVO = this._jwtService.GenerateToken(user);
 

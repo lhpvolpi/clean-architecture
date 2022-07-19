@@ -19,12 +19,6 @@ namespace CleanArchitecture.Core.Common.Extensions
                data: data,
                messages: StringExtensions.ToListKeyValuePair(key, message));
 
-        public static ICommandResult CreateError406(object data, string key, string message)
-          => CommandResult.CreateSuccess(statusCode: 406,
-              metadataType: EMetadataType.Error,
-              data: data,
-              messages: StringExtensions.ToListKeyValuePair(key, message));
-
         public static ICommandResult CreateError422(object data, ValidationResult validationResult)
             => CommandResult.CreateError(statusCode: 422,
                 metadataType: EMetadataType.Error,

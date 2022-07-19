@@ -1,0 +1,118 @@
+version: '3.4'
+
+services:
+
+  # redis
+  redis:
+    image: redis:latest
+    container_name: redis
+    command: redis-server --requirepass clean2022
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/var/lib/redis
+    networks:
+      - docker-network
+
+  # mongodb
+  mongodb:
+    image: mongo:latest
+    container_name: mongodb
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: clean2022
+      MONGO_INITDB_DATABASE: clean-architecture
+    ports:
+      - 27017:27017
+    volumes:
+      - mongodb-data:/data/db
+    networks:
+      - docker-network
+
+  #elastic search
+  elasticsearch:
+    container_name: elasticsearch
+    image: elasticsearch:7.9.2
+    ports:
+      - 9200:9200
+    volumes:
+      - elasticsearch-data:/usr/share/elasticsearch/data
+    environment:
+      - xpack.monitoring.enabled=true
+      - xpack.watcher.enabled=false
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - discovery.type=single-node
+      - ELASTIC_PASSWORD=elastic
+    networks:
+      - docker-network
+  # apm
+  apm:
+    container_name: apm
+    image: docker.elastic.co/apm/apm-server:7.9.2
+    depends_on:
+      - elasticsearch
+    ports:
+      - "8200:8200"
+      - "8201:8201"
+    environment:
+      - apm-server.host=0.0.0.0
+      - apm-server.frontend.enabled=true
+      - setup.template.settings.index.number_of_shards=1
+      - setup.template.settings.index.codec=best_compression
+      - output.elasticsearch.hosts=["elasticsearch:9200"]
+    command:
+      [
+        "apm-server",
+        "-e",
+        "-E",
+        "output.elasticsearch.username=elastic",
+        "-E",
+        "output.elasticsearch.password=elastic"
+      ]
+    networks:
+      - docker-network
+
+  # kibana
+  kibana:
+    container_name: kibana
+    image: kibana:7.9.2
+    ports:
+      - 5601:5601
+    depends_on:
+      - elasticsearch
+    environment:
+      - ELASTICSEARCH_URL=http://elasticsearch:9200
+      - ELASTICSEARCH_USERNAME="elastic"
+      - ELASTICSEARCH_PASSWORD="elastic"
+    networks:
+      - docker-network
+
+  # app
+  api:
+    container_name: api
+    image: clean-architecture-api
+    build:
+      context: .
+      dockerfile: CleanArchitecture.Api/Dockerfile
+    depends_on:
+      - redis
+      - mongodb
+      - elasticsearch
+      - apm
+      - kibana
+    links:
+      - "redis"
+      - "mongodb"
+      - "elasticsearch"
+      - "apm"
+    networks:
+      - docker-network
+
+networks:
+  docker-network:
+    driver: bridge
+
+volumes:
+  redis-data:
+  mongodb-data:
+  elasticsearch-data:
