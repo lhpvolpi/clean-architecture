@@ -7,12 +7,4 @@
 	<ItemGroup>
 		<PackageReference Include="FluentValidation" Version="11.1.0" />
 	</ItemGroup>
-	<ItemGroup>
-	  <None Remove="Commands\User\" />
-	  <None Remove="Validators\User\" />
-	</ItemGroup>
-	<ItemGroup>
-	  <Folder Include="Commands\User\" />
-	  <Folder Include="Validators\User\" />
-	</ItemGroup>
 </Project>

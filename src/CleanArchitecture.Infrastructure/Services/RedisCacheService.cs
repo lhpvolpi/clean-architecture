@@ -29,7 +29,7 @@ namespace CleanArchitecture.Infrastructure.Services
             var value = await this._client.GetDatabase().StringGetAsync(key);
 
             if (!value.IsNullOrEmpty)
-                return JsonSerializer.Deserialize<T>(value);
+                return JsonSerializer.Deserialize<T>(value.ToString());
 
             return default;
         }

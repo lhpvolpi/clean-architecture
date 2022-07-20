@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using CleanArchitecture.Core.Entities;
 using CleanArchitecture.Core.Interfaces.Repositories;
 using CleanArchitecture.Infrastructure.Common;
@@ -20,6 +21,9 @@ namespace CleanArchitecture.Infrastructure.Repositories
 
         public async Task CreateAsync(User user)
             => await this._collection.InsertOneAsync(user);
+
+        public async Task<User> GetByIdAsync(Guid id)
+            => await this._collection.Find(i => i.Id == id).FirstOrDefaultAsync();
 
         public async Task<User> GetByUsernameAsync(string username)
             => await this._collection.Find(i => i.Username == username || i.Email == username).FirstOrDefaultAsync();

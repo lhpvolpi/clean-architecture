@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using CleanArchitecture.Core.Commands.Authenticate;
+using CleanArchitecture.Core.Common.Commands;
 using CleanArchitecture.Core.Common.Extensions;
 using CleanArchitecture.Core.Interfaces.CommandHandlers;
 using CleanArchitecture.Core.Interfaces.Commands;
@@ -17,11 +18,7 @@ namespace CleanArchitecture.Core.Handlers
         private readonly IJwtService _jwtService;
 
         public AuthenticateCommandHandler(IUserRepository userRepository,
-            IJwtService jwtService)
-        {
-            this._userRepository = userRepository;
-            this._jwtService = jwtService;
-        }
+            IJwtService jwtService) => (this._userRepository, this._jwtService) = (userRepository, jwtService);
 
         public async Task<ICommandResult> Handle(SignInCommand command)
         {
@@ -46,7 +43,7 @@ namespace CleanArchitecture.Core.Handlers
 
             await this._userRepository.UpdateAsync(user);
 
-            return CommandResultExtensions.CreateSuccess200(tokenVO, "login successfully");
+            return CommandResultExtensions.CreateSuccess200(tokenVO, EMetadataType.Object, "login successfully");
         }
     }
 }

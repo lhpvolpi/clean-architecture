@@ -7,9 +7,9 @@ namespace CleanArchitecture.Core.Common.Extensions
 {
     public static class CommandResultExtensions
     {
-        public static ICommandResult CreateSuccess200(object data, string message)
+        public static ICommandResult CreateSuccess200(object data, EMetadataType metadataType, string message)
             => CommandResult.CreateSuccess(statusCode: 200,
-                metadataType: EMetadataType.Object,
+                metadataType: metadataType,
                 data: data,
                 messages: StringExtensions.ToListKeyValuePair(string.Empty, message));
 
@@ -24,6 +24,12 @@ namespace CleanArchitecture.Core.Common.Extensions
                 metadataType: EMetadataType.Error,
                 data: data,
                 messages: validationResult.Errors?.ToListKeyValuePair());
+
+        public static ICommandResult CreateError422(object data, string key, string message)
+            => CommandResult.CreateError(statusCode: 422,
+                metadataType: EMetadataType.Error,
+                data: data,
+                messages: StringExtensions.ToListKeyValuePair(key, message));
     }
 }
 

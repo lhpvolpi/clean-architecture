@@ -42,10 +42,12 @@ namespace CleanArchitecture.Core.Entities
             if (string.IsNullOrEmpty(password))
                 throw new ArgumentNullException(nameof(password), "is required");
 
-            if (this.Password == password.ComputeSHA256Hash())
+            var newPassword = password.ComputeSHA256Hash();
+
+            if (this.Password == newPassword)
                 throw new ArgumentException("new password can't equals old password", nameof(password));
 
-            this.Password = password.ComputeSHA256Hash();
+            this.Password = newPassword;
             this.UpdatedAt = DateTime.UtcNow;
         }
 
